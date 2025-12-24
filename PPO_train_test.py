@@ -45,7 +45,7 @@ def PPO_train(train_env_id, model_name, lr=3e-4, steps=800_000):
     plot_training_results(log_dir, title=f"training_{model_name}")
 
 
-def PPO_train_udr(train_env_id, model_name, lr=3e-4, steps=800_000, udr_range=0.2):
+def PPO_train_udr(train_env_id, model_name, lr=3e-4, lr_scheduler_type="constant", steps=800_000, udr_range=0.4):
     """
     Addestra un modello PPO.
     Impostando 'enable_udr' a True verrà usata la Uniform Domain Randomization.
@@ -67,7 +67,11 @@ def PPO_train_udr(train_env_id, model_name, lr=3e-4, steps=800_000, udr_range=0.
     model = PPO(
         "MlpPolicy",
         env,
-        learning_rate=lr
+        learning_rate=get_lr_scheduler(
+            lr_scheduler_type,
+            initial_lr=lr
+        ),
+        policy_kwargs = dict(net_arch=dict(pi=[256, 256], vf=[256, 256]))
     )
 
     model.learn(
