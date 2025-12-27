@@ -51,8 +51,9 @@ class CustomHopper(MujocoEnv, utils.EzPickle):
         reset_noise_scale: float = 5e-3,
         exclude_current_positions_from_observation: bool = True,
         domain: Optional[str] = None, # indica il domain in cui vivrà l'hopper
-        enable_randomization: bool = False, # parametro per usare o meno la UDR
-        uniform_randomization_range: float = 0.05,
+        # PARAMETRI AGGIUNTIVI PER GESTIRE LA UDR/ADR
+        enable_randomization: bool = False, # parametro per usare o meno la randomizzazione
+        uniform_randomization_range: float = 0.05, # range di randomizzazione (se uso ADR cambierà col tempo)
         **kwargs,
     ):
         utils.EzPickle.__init__(

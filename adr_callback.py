@@ -16,6 +16,7 @@ class ADRCallback(BaseCallback):
         increase_rate: float,
         starting_range: float,
         max_range: float,
+        seed=None,
         verbose=1):
 
         super(ADRCallback, self).__init__(verbose)
@@ -40,6 +41,9 @@ class ADRCallback(BaseCallback):
             enable_randomization=True,
             uniform_randomization_range=starting_range
         )
+
+        if seed is not None:
+            self.eval_env.reset(seed=seed)
 
 
     def _init_callback(self) -> None:

@@ -23,14 +23,27 @@ def _constant_schedule(initial_value: float) -> Callable[[float], float]:
 
 def _linear_schedule(initial_value: float) -> Callable[[float], float]:
     """
-    Decadimento lineare del learning rate.
+    Decadimento lineare del learning rate (non arriva a 0)
     :param initial_value: Il valore iniziale del learning rate.
     :return: funzione che calcola il learning rate corrente.
     """
 
     def func(progress: float) -> float:
         # progress_remaining va da 1.0 (inizio) a 0.0 (fine)
-        return progress * initial_value
+        
+        # Calcoliamo il valore finale target
+        # (il learning rate decade linearmente fino al 10% del suo valore finale)
+        final_value = initial_value * 0.1
+        
+        # La differenza che deve decadere
+        decay_amount = initial_value - final_value
+        
+        # Formula: Base fissa + (parte variabile * progresso)
+        # Quando progress è 1.0 -> final + (init - final)*1 = init
+        # Quando progress è 0.0 -> final + 0 = final
+        current_lr = final_value + (decay_amount * progress)
+        
+        return current_lr
     
     return func
 
