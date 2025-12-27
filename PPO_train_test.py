@@ -208,10 +208,22 @@ def PPO_test(test_env_id, model_name):
 
     loaded_model = PPO.load(str(Path("models") / f"{model_name}"))
     
-    mean_reward, std_reward = evaluate_policy(loaded_model, env, n_eval_episodes=50)
-    
+    episode_rewards, episode_lengths = evaluate_policy(
+        loaded_model, 
+        env, 
+        n_eval_episodes=50, 
+        return_episode_rewards=True
+    )
+
     env.close()
-    
-    print(f"Test mean cumulative reward {mean_reward} +/- {std_reward}")
+
+    mean_reward = np.mean(episode_rewards)
+    std_reward = np.std(episode_rewards)
+    mean_len = np.mean(episode_lengths)
+    std_len = np.std(episode_lengths)
+
+    print(f"Test Results:")
+    print(f"  Mean Reward: {mean_reward:.2f} +/- {std_reward:.2f}")
+    print(f"  Mean Steps:  {mean_len:.2f} +/- {std_len:.2f}")
 
     return mean_reward, std_reward

@@ -32,10 +32,3 @@ def visualize(model_path, env_id):
         print(f"Reward Totale: {total_reward:.2f}")
 
     env.close()
-
-if __name__ == '__main__':
-    
-    visualize(
-        model_path="models/ppo_source_adr", # modello allenato
-        env_id="CustomHopper-target-v0" # ambiente reale
-    )
