@@ -57,7 +57,7 @@ class ADRCallback(BaseCallback):
 
             # --- VALUTAZIONE ---
             # Testiamo su un pò di episodi. Se sopravvive ai bordi, è robusto.
-            mean_reward, std_reward = evaluate_policy(self.model, self.eval_env, n_eval_episodes=10)
+            mean_reward, std_reward = evaluate_policy(self.model, self.eval_env, n_eval_episodes=25)
 
             # --- DISATTIVA MODALITÀ BOUNDARY ---
             self.eval_env.unwrapped.set_boundary_mode(False)
