@@ -5,3 +5,4 @@ imageio
 scipy
 ipywidgets
 ipykernel
+sb3-contrib

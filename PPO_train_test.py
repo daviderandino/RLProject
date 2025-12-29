@@ -1,6 +1,7 @@
 from pathlib import Path
 import gymnasium as gym
 from stable_baselines3 import PPO
+from sb3_contrib import RecurrentPPO
 from stable_baselines3.common.evaluation import evaluate_policy
 from stable_baselines3.common.monitor import Monitor
 from stable_baselines3.common.utils import set_random_seed
@@ -55,7 +56,8 @@ def PPO_train(train_env_id, model_name, lr=3e-4, steps=800_000, seed=None):
 
 
 def PPO_train_udr(
-        train_env_id, model_name,
+        train_env_id,
+        model_name,
         lr=3e-4,
         lr_scheduler_type="constant",
         steps=800_000,
@@ -83,23 +85,30 @@ def PPO_train_udr(
     )
 
     env = Monitor(env, filename=f"{log_dir}/monitor.csv")
-    
-    policy_kwargs = dict(net_arch=dict(pi=[128, 128], vf=[128, 128]))
-    if net_size == "large":
-        policy_kwargs = dict(net_arch=dict(pi=[256, 256], vf=[256, 256]))
-    elif net_size == "small":
-        policy_kwargs = dict(net_arch=dict(pi=[64, 64], vf=[64, 64]))
 
-    model = PPO(
-        "MlpPolicy",
+    # Configurazione della rete neurale
+    policy_kwargs = dict(
+        # 1. Architettura Feed-Forward prima della LSTM (Feature Extractor)
+        net_arch=dict(pi=[128, 128], vf=[128, 128]),
+        
+        # 2. Dimensione della memoria
+        lstm_hidden_size=128,
+        
+        # 3. Memoria anche per il Critico (non solo per l'Attore)
+        enable_critic_lstm=True 
+    )
+
+    model = RecurrentPPO(
+        "MlpLstmPolicy",
         env,
-        learning_rate=get_lr_scheduler(
-            lr_scheduler_type,
-            initial_lr=lr
-        ),
+        # 4. Learning Rate Lineare
+        learning_rate=get_lr_scheduler("linear", 3e-4),
+        
+        # 5. Parametri di aggiornamento
+        n_steps=2048,
+        batch_size=64,
+        
         policy_kwargs=policy_kwargs,
-        n_steps=4096,
-        batch_size=128,
         seed=seed
     )
 
