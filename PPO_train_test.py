@@ -126,6 +126,7 @@ def PPO_train_adr(
         reward_to_check=1500,
         check_frequency=80_000,
         net_size="large",
+        log_dir=None,
         seed=None
     ):
     """
@@ -139,7 +140,9 @@ def PPO_train_adr(
     if seed is not None:
         set_random_seed(seed)
 
-    log_dir = "logs_adr"
+    #log_dir = "logs_adr"
+    if log_dir is None:
+        log_dir = os.path.join("logs",model_name)
     os.makedirs(log_dir, exist_ok=True)
 
     # ambiente di training
@@ -149,7 +152,7 @@ def PPO_train_adr(
         uniform_randomization_range=starting_adr_range
     )
     
-    env = Monitor(env, filename=f"{log_dir}/monitor.csv")
+    env = Monitor(env, filename=os.path.join(log_dir, "monitor.csv"))
 
     policy_kwargs = dict(net_arch=dict(pi=[128, 128], vf=[128, 128]))
     if net_size == "large":

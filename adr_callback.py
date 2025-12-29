@@ -24,6 +24,7 @@ class ADRCallback(BaseCallback):
         self.check_freq = check_freq
         self.reward_threshold = reward_threshold
         self.increase_rate = increase_rate
+        self.starting_range = starting_range
         self.current_range = starting_range
         self.max_range = max_range
         self.adr_history = [(0, starting_range)]
@@ -51,6 +52,12 @@ class ADRCallback(BaseCallback):
         self.eval_env.unwrapped.set_udr_range(self.current_range)
         
     def _on_step(self) -> bool:
+        early_stopping_steps = 300_000
+        if self.n_calls >= early_stopping_steps == 0 and self.current_range <= self.starting_range: 
+            print(f"Skipping this experiment cuz is shitty. [Early stopping] Timesteps: {early_stopping_steps}- Range: {self.current_range}")
+            return False
+            
+        
         if self.n_calls % self.check_freq == 0: # chiamata ad ogni passo del simulatore, ogni 'check_freq' timesteps parte
             
             self.eval_env.unwrapped.set_boundary_mode(True)
