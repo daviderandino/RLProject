@@ -5,6 +5,8 @@ from sb3_contrib import RecurrentPPO
 from stable_baselines3.common.evaluation import evaluate_policy
 from stable_baselines3.common.monitor import Monitor
 from stable_baselines3.common.utils import set_random_seed
+from stable_baselines3.common.vec_env import DummyVecEnv, VecFrameStack, VecMonitor
+from gymnasium.wrappers import FrameStackObservation
 
 from env.custom_hopper import *
 from adr_callback import ADRCallback
@@ -54,6 +56,68 @@ def PPO_train(train_env_id, model_name, lr=3e-4, steps=800_000, seed=None):
 
     plot_training_results(log_dir, title=f"training_{model_name}")
 
+def PPO_train_udr_stacked_optimized(
+        train_env_id='CustomHopper-source-v0',
+        model_name='',
+        lr=3e-4,
+        lr_scheduler_type='constant',
+        steps=0,
+        udr_range=0.2,
+        net_size="large", # [ small - medium - large ] -> [ 64 - 128 - 256 ],
+        seed=None
+    ):
+    
+    print(f"\n--- Training STACKED (Optimized Native) on {train_env_id} ---")
+
+    if seed is not None:
+        set_random_seed(seed)
+
+    log_dir = "logs_stacked_opt"
+    os.makedirs(log_dir, exist_ok=True)
+
+    # 1. Creazione ambiente base
+    env = gym.make(
+        train_env_id,
+        enable_randomization=True,
+        uniform_randomization_range=udr_range
+    )
+    
+    # 2. FRAME STACKING NATIVO (Molto più veloce di VecFrameStack per env singoli)
+    # Gymnasium applica lo stacking direttamente sull'osservazione senza overhead di vettorizzazione.
+    env = FrameStackObservation(env, num_stack=4)
+
+    # 3. Monitor
+    # Monitor avvolge l'ambiente stackato. Il file CSV sarà identico a prima.
+    env = Monitor(env, filename=f"{log_dir}/monitor.csv")
+    
+    # Configurazione rete (Esattamente la tua)
+    policy_kwargs = dict(net_arch=dict(pi=[128, 128], vf=[128, 128]))
+    if net_size == "large":
+        policy_kwargs = dict(net_arch=dict(pi=[256, 256], vf=[256, 256]))
+    elif net_size == "small":
+        policy_kwargs = dict(net_arch=dict(pi=[64, 64], vf=[64, 64]))
+
+    # 4. Modello PPO
+    model = PPO(
+        "MlpPolicy",
+        env,
+        learning_rate=get_lr_scheduler("linear", 3e-4), # Ti lascio il linear che è meglio
+        policy_kwargs=policy_kwargs,
+        n_steps=4096,   # I tuoi parametri
+        batch_size=128, # I tuoi parametri
+        seed=seed,
+        verbose=1
+    )
+
+    model.learn(
+        total_timesteps=steps,
+        progress_bar=True
+    )
+
+    model.save(str(Path("models") / f"{model_name}_stacked_opt"))
+    env.close()
+
+    plot_training_results(log_dir, title=f"training_{model_name}_stacked_opt")
 
 def PPO_train_udr(
         train_env_id,
