@@ -161,9 +161,9 @@ def PPO_train_adr(
         eval_env_id=train_env_id,
         check_freq=check_frequency,             # controllo le prestazioni del robot all'edge, ogni 5k timesteps
         reward_threshold=reward_to_check,       # reward threshold da ottenere per espandere il range della randomization
-        increase_rate=increase_rate,                     # +5% alla volta
+        increase_rate=increase_rate,            
         starting_range=starting_adr_range,
-        max_range=objective_adr_range,           # range obiettivo
+        max_range=objective_adr_range,          # range obiettivo
         seed=seed
     )
 
