@@ -1,6 +1,8 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
+import os
+
 
 def plot_training_results(log_dir, title="Training Results", adr_stats=None):
     """
@@ -16,6 +18,8 @@ def plot_training_results(log_dir, title="Training Results", adr_stats=None):
     except FileNotFoundError:
         print(f"Errore: Nessun file monitor.csv trovato in {log_dir}")
         return
+    
+    os.makedirs("plots", exist_ok=True)
 
     # Calcolo cumulo dei timesteps per asse X
     # 'l' è la lunghezza dell'episodio in timesteps

@@ -1,4 +1,3 @@
-# adr_callback.py
 import gymnasium as gym
 from stable_baselines3.common.callbacks import BaseCallback
 from stable_baselines3.common.evaluation import evaluate_policy

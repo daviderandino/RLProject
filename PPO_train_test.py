@@ -6,6 +6,7 @@ from stable_baselines3.common.monitor import Monitor
 from stable_baselines3.common.utils import set_random_seed
 
 from env.custom_hopper import *
+from env.custom_walker import *
 from adr_callback import ADRCallback
 from utils.schedulers import get_lr_scheduler
 from utils.plot import plot_training_results
@@ -26,7 +27,7 @@ def PPO_train(train_env_id, model_name, lr=3e-4, steps=800_000, seed=None):
         set_random_seed(seed)
 
     log_dir = "logs"
-    os.makedirs(log_dir, exist_ok=True)
+    os.makedirs("logs", exist_ok=True)
 
     env = gym.make(
         train_env_id

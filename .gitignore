@@ -3,5 +3,8 @@ __pycache__
 Sim2Real.pdf
 appunti.md
 logs_adr/
-lods_udr/
+logs_udr/
+logs/
 appunti_risultati.md
+models/
+plots/

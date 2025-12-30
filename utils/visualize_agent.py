@@ -2,6 +2,7 @@ import gymnasium as gym
 from stable_baselines3 import PPO
 
 from env.custom_hopper import *
+from env.custom_walker import *
 
 
 def visualize(model_path, env_id):
