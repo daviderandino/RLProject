@@ -67,10 +67,10 @@ class ADRCallback(BaseCallback):
             range_updated = False
 
             # --- LOGICA DI ESPANSIONE/RESTRIZIONE RANGE ---
-            if mean_reward >= self.reward_threshold: # se l'agente ha masterato l'edge attuale
+            if mean_reward >= self.reward_threshold: # se l'agente ha masterato il range attuale
                 if self.current_range < self.max_range: # se il range attuale non è ancora quello massimo
                     self.current_range += self.increase_rate
-                    if self.current_range > self.max_range: # se con l'aggiornamento abbiamo superato il range massimo, clippiamo
+                    if self.current_range > self.max_range: # se con l'aggiornamento abbiamo superato il range massimo, fermiamo la crescita
                         self.current_range = self.max_range
                         print(f"[ADR Objective Boundary Reached] New Range +/- {self.current_range:.1%}")
                     else:

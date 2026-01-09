@@ -287,7 +287,7 @@ class CustomHopper(MujocoEnv, utils.EzPickle):
         # task contiene 3 valori: [nuova_massa_thigh, nuova_massa_leg, nuova_massa_foot].
         # In MuJoCo body_mass ha indici: 0=World, 1=Torso, 2=Thigh, 3=Leg, 4=Foot.
         # Quindi devo modificare dall'indice 2 in poi.
-        self.model.body_mass[2:] = task # ci va 1: o 2: ???
+        self.model.body_mass[2:] = task
 
     def sample_parameters(self):
         """
@@ -305,8 +305,8 @@ class CustomHopper(MujocoEnv, utils.EzPickle):
         masses = self.original_masses[1:]
 
         if self.boundary_mode:
-            # --- LOGICA BOUNDARY (Test severo) ---
-            # Genera array di fatto casualmente di -1 e +1
+            # --- LOGICA BOUNDARY (Test severo ogni X timesteps) ---
+            # Genera array fatti casualmente di -1 e +1
             signs = self.np_random.choice([-1.0, 1.0], size=masses.shape)
             # Applica -> massa * (1 +/- range)
             sampled_masses = masses * (1.0 + signs * self.uniform_randomization_range)

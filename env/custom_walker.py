@@ -46,6 +46,7 @@ class CustomWalker(MujocoEnv, utils.EzPickle):
         reset_noise_scale: float = 5e-3,
         exclude_current_positions_from_observation: bool = True,
         domain: Optional[str] = None,
+        # PARAMETRI AGGIUNTIVI PER GESTIRE LA UDR/ADR
         enable_randomization: bool = False,
         uniform_randomization_range: float = 0.05,
         **kwargs,
@@ -252,7 +253,7 @@ class CustomWalker(MujocoEnv, utils.EzPickle):
 gym.register(
     id="CustomWalker-v0",
     entry_point="%s:CustomWalker" % __name__,
-    max_episode_steps=1000, # Walker di solito ha episodi un po' più lunghi
+    max_episode_steps=1000,
 )
 
 gym.register(

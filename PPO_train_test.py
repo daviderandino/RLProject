@@ -16,7 +16,13 @@ from utils.plot import plot_training_results
 # | PPO TRAINING FUNCTIONS |
 # + -----------------------+
 
-def PPO_train(train_env_id, model_name, lr=3e-4, steps=800_000, seed=None):
+def PPO_train(
+        train_env_id, 
+        model_name, 
+        lr, 
+        steps, 
+        seed=None
+    ):
     """
     Addestra un modello PPO senza usare tecniche di randomizzazione.
     """
@@ -26,14 +32,13 @@ def PPO_train(train_env_id, model_name, lr=3e-4, steps=800_000, seed=None):
     if seed is not None:
         set_random_seed(seed)
 
-    log_dir = "logs"
     os.makedirs("logs", exist_ok=True)
 
     env = gym.make(
         train_env_id
     )
 
-    env = Monitor(env, filename=f"{log_dir}/monitor.csv")
+    env = Monitor(env, filename=f"logs/monitor.csv")
     
     model = PPO(
         "MlpPolicy",
@@ -52,21 +57,21 @@ def PPO_train(train_env_id, model_name, lr=3e-4, steps=800_000, seed=None):
     model.save(str(Path("models") / f"{model_name}"))
     env.close()
 
-    plot_training_results(log_dir, title=f"training_{model_name}")
+    plot_training_results("logs", title=f"training_{model_name}")
 
 
 def PPO_train_udr(
-        train_env_id, model_name,
-        lr=3e-4,
-        lr_scheduler_type="constant",
-        steps=800_000,
-        udr_range=0.4,
-        net_size="medium",
+        train_env_id, 
+        model_name,
+        lr,
+        lr_scheduler_type,
+        steps,
+        udr_range,
+        net_size,
         seed=None
     ):
     """
     Addestra un modello PPO.
-    Impostando 'enable_udr' a True verrà usata la Uniform Domain Randomization.
     """
 
     print(f"\n--- Training on {train_env_id} using UDR ---")
@@ -74,8 +79,7 @@ def PPO_train_udr(
     if seed is not None:
         set_random_seed(seed)
 
-    log_dir = "logs_udr"
-    os.makedirs(log_dir, exist_ok=True)
+    os.makedirs("logs_udr", exist_ok=True)
 
     env = gym.make(
         train_env_id,
@@ -83,13 +87,14 @@ def PPO_train_udr(
         uniform_randomization_range=udr_range
     )
 
-    env = Monitor(env, filename=f"{log_dir}/monitor.csv")
+    env = Monitor(env, filename=f"logs_udr/monitor.csv")
     
-    policy_kwargs = dict(net_arch=dict(pi=[128, 128], vf=[128, 128]))
-    if net_size == "large":
-        policy_kwargs = dict(net_arch=dict(pi=[256, 256], vf=[256, 256]))
-    elif net_size == "small":
+    if net_size == "small":
         policy_kwargs = dict(net_arch=dict(pi=[64, 64], vf=[64, 64]))
+    elif net_size == "medium":
+        policy_kwargs = dict(net_arch=dict(pi=[128, 128], vf=[128, 128]))
+    else:
+        policy_kwargs = dict(net_arch=dict(pi=[256, 256], vf=[256, 256]))
 
     model = PPO(
         "MlpPolicy",
@@ -112,15 +117,15 @@ def PPO_train_udr(
     model.save(str(Path("models") / f"{model_name}"))
     env.close()
 
-    plot_training_results(log_dir, title=f"training_{model_name}")
+    plot_training_results("logs_udr", title=f"training_{model_name}")
 
 
 def PPO_train_adr(
         train_env_id,
         model_name,
-        lr=3e-4,
-        lr_scheduler_type="constant",
-        steps=800_000,
+        lr,
+        lr_scheduler_type,
+        steps,
         starting_adr_range=0.05,
         objective_adr_range=0.5,
         increase_rate=0.05,
@@ -140,8 +145,7 @@ def PPO_train_adr(
     if seed is not None:
         set_random_seed(seed)
 
-    log_dir = "logs_adr"
-    os.makedirs(log_dir, exist_ok=True)
+    os.makedirs("logs_adr", exist_ok=True)
 
     # ambiente di training
     env = gym.make(
@@ -150,13 +154,14 @@ def PPO_train_adr(
         uniform_randomization_range=starting_adr_range
     )
     
-    env = Monitor(env, filename=f"{log_dir}/monitor.csv")
+    env = Monitor(env, filename=f"logs_adr/monitor.csv")
 
-    policy_kwargs = dict(net_arch=dict(pi=[128, 128], vf=[128, 128]))
-    if net_size == "large":
-        policy_kwargs = dict(net_arch=dict(pi=[256, 256], vf=[256, 256]))
-    elif net_size == "small":
+    if net_size == "small":
         policy_kwargs = dict(net_arch=dict(pi=[64, 64], vf=[64, 64]))
+    elif net_size == "medium":
+        policy_kwargs = dict(net_arch=dict(pi=[128, 128], vf=[128, 128]))
+    else:
+        policy_kwargs = dict(net_arch=dict(pi=[256, 256], vf=[256, 256]))
 
     adr_callback = ADRCallback(
         eval_env_id=train_env_id,
@@ -190,7 +195,7 @@ def PPO_train_adr(
     model.save(str(Path("models") / f"{model_name}"))
     env.close()
 
-    plot_training_results(log_dir, title=f"training_{model_name}", adr_stats=adr_callback.adr_history)
+    plot_training_results("logs_adr", title=f"training_{model_name}", adr_stats=adr_callback.adr_history)
 
 # +----------------------+
 # | PPO TESTING FUNCTION |
