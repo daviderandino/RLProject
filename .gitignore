@@ -6,3 +6,7 @@ appunti.md
 *.png
 !grid_search_results_increase_rate_005.csv
 !grid_search_results.csv
+appunti_risultati.md
+models/
+logs_adr/
+logs_udr/
