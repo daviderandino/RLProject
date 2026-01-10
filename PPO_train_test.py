@@ -232,4 +232,4 @@ def PPO_test(test_env_id, model_name):
     print(f"  Mean Reward: {mean_reward:.2f} +/- {std_reward:.2f}")
     print(f"  Mean Steps:  {mean_len:.2f} +/- {std_len:.2f}")
 
-    return mean_reward, std_reward
+    return mean_reward, std_reward, mean_len, std_len
