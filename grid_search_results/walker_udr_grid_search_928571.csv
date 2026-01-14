@@ -1,0 +1,10 @@
+model_id,lr_scheduler_type,udr_range,architecture,learning_rate,test_mean_reward,test_std_reward,test_mean_len,test_std_len,success
+CustomWalker-source-v0_udr_constant_0.3_small_928571,constant,0.3,small,0.0003,2399.7985583782197,1623.8644188811852,601.96,368.5509441040682,0
+CustomWalker-source-v0_udr_constant_0.3_medium_928571,constant,0.3,medium,0.0003,2264.823714107275,906.4352703774474,643.1,245.84257157782906,0
+CustomWalker-source-v0_udr_constant_0.3_large_928571,constant,0.3,large,0.0003,2488.701504175635,1041.3869530189486,663.9,272.55841575706296,0
+CustomWalker-source-v0_udr_constant_0.5_small_928571,constant,0.5,small,0.0003,1070.3171891212464,297.6092617389373,306.96,66.8927380214026,0
+CustomWalker-source-v0_udr_constant_0.5_medium_928571,constant,0.5,medium,0.0003,4120.426528596878,567.6620926323579,969.94,127.66352807282118,1
+CustomWalker-source-v0_udr_constant_0.5_large_928571,constant,0.5,large,0.0003,2228.381054404378,1042.7102852673727,610.26,273.8348268573594,0
+CustomWalker-source-v0_udr_constant_0.7_small_928571,constant,0.7,small,0.0003,576.618782428503,39.26419428579438,196.82,8.810652643249535,0
+CustomWalker-source-v0_udr_constant_0.7_medium_928571,constant,0.7,medium,0.0003,3634.6016231942176,838.1132814715191,879.4,187.2624895701219,1
+CustomWalker-source-v0_udr_constant_0.7_large_928571,constant,0.7,large,0.0003,2233.0453820729253,878.2072753362893,648.24,245.91653543428103,0

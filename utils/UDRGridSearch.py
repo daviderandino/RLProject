@@ -51,7 +51,7 @@ class UDRGridSearch:
         
         for udr_range, arch in pbar:
 
-            model_name = f"{self.train_env_id}_adr_{self.lr_scheduler_type}_{udr_range}_{arch}_{self.seed}"
+            model_name = f"{self.train_env_id}_udr_{self.lr_scheduler_type}_{udr_range}_{arch}_{self.seed}"
 
             # skippa se l'esperimento esiste già
             if os.path.exists(self.csv_name):

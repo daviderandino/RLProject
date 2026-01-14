@@ -1,0 +1,10 @@
+model_id,lr_scheduler_type,udr_range,architecture,learning_rate,test_mean_reward,test_std_reward,test_mean_len,test_std_len,success
+CustomHopper-source-v0_udr_constant_0.3_small_928571,constant,0.3,small,0.0003,1004.1979145169258,38.698208865822664,258.62,7.696466721814628,0
+CustomHopper-source-v0_udr_constant_0.3_medium_928571,constant,0.3,medium,0.0003,735.5880693244934,1.8328846926514675,217.64,0.7144228439796702,0
+CustomHopper-source-v0_udr_constant_0.3_large_928571,constant,0.3,large,0.0003,924.4366685581207,5.220901742588039,270.02,2.6190838092737696,0
+CustomHopper-source-v0_udr_constant_0.5_small_928571,constant,0.5,small,0.0003,1742.8197222113608,120.09108527336144,465.6,39.67870965643918,0
+CustomHopper-source-v0_udr_constant_0.5_medium_928571,constant,0.5,medium,0.0003,480.0613502550125,414.9223981473059,145.58,91.28550596891053,0
+CustomHopper-source-v0_udr_constant_0.5_large_928571,constant,0.5,large,0.0003,872.2797937226295,10.926730631707153,244.48,2.17476435505091,0
+CustomHopper-source-v0_udr_constant_0.7_small_928571,constant,0.7,small,0.0003,1047.7497514259815,92.14056553620499,280.82,23.777039344712367,0
+CustomHopper-source-v0_udr_constant_0.7_medium_928571,constant,0.7,medium,0.0003,1577.6934184527397,78.07293560800184,474.48,31.107709655324996,0
+CustomHopper-source-v0_udr_constant_0.7_large_928571,constant,0.7,large,0.0003,1357.5076642346382,61.42630865084038,366.4,19.802020098969702,0
